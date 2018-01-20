@@ -9,9 +9,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 
     @RequestMapping(value = "/", method= RequestMethod.GET)
-    public String demo(Model model) {
-
+    public String home(Model model) {
         model.addAttribute("contents", "demo contents");
         return "index";
+    }
+
+    @RequestMapping(value = "/menu", method= RequestMethod.GET)
+    public String menu(Model model) {
+        model.addAttribute("contents", "demo contents");
+        return "menu";
+    }
+
+    @RequestMapping(value = "/game", method= RequestMethod.GET)
+    public String game(Model model) {
+        return "game";
     }
 }

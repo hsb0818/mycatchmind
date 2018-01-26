@@ -24,4 +24,9 @@ public class MainController {
     public String game(Model model) {
         return "game";
     }
+
+    @RequestMapping(value = "/lobbyroom", method= RequestMethod.GET)
+    public String lobbyroom(Model model) {
+        return "lobbyroom";
+    }
 }

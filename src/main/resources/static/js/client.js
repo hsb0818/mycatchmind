@@ -17,9 +17,12 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
+
         stompClient.subscribe('/kh/connected', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
+
+        stompClient.subscribe('/')
     });
 }
 
@@ -37,5 +40,4 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
 });

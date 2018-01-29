@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import sun.misc.Request;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -44,5 +45,11 @@ public class UserCtrl {
         System.out.println("user login");
         session.setAttribute(Config.SESS_USER_KEY, id);
         return "redirect:lobby";
+    }
+
+    @RequestMapping(value = "/room", method = RequestMethod.GET)
+    public String room(final HttpSession session, Model model, @RequestParam("name")String name) {
+        model.addAttribute("name", name);
+        return "room";
     }
 }

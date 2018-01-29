@@ -4,15 +4,12 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/js/lobbyroom_client.js"></script>
+    <script src="/js/room_client.js"></script>
+
     <meta charset="UTF-8"/>
-    <title>LobbyRoom</title>
+    <title th:text="${name}"></title>
 </head>
 <body>
-<h1 th:text="${id}"></h1>
-    <div>
-        <button id="create-room">Create Room</button>
-    </div>
-    <div id="rooms"></div>
+
 </body>
 </html>

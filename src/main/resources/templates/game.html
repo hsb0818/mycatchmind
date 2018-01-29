@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Game</title>
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/app.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/game.js"></script>
     <script src="/js/gamestart.js"></script>
     <script src="/js/client.js"></script>
+
 </head>
 <body>
+    <div id="user">
+        <p id="user-id"></p>
+        <p id="user-nickname"></p>
+    </div>
     <div id="game"></div>
 </body>
 </html>

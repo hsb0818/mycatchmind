@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class MessageHandler {
-    @MessageMapping("/hello")
-    @SendTo("/kh/greetings")
+    @MessageMapping("/hello") // khwebgame/hello
+    @SendTo("/kh/connected")
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
         return new Greeting("Hello, " + message.getName() + "!");

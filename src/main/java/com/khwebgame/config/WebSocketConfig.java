@@ -12,12 +12,12 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/kh");
-        config.setApplicationDestinationPrefixes("/game");
+        config.enableSimpleBroker("/kh/");
+        config.setApplicationDestinationPrefixes("/webgame");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        registry.addEndpoint("/khwebgame").withSockJS();
     }
 }

@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/user", method = { RequestMethod.GET, RequestMethod.POST })
 public class UserCtrl {
-
     @Autowired
     LoginBO loginBO;
 

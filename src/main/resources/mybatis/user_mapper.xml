@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.khwebgame.core.dao.LoginDAO">
-    <select id="Verification" parameterType="String" resultType="com.khwebgame.core.model.LoginInfo">
+    <select id="Verification" parameterType="String" resultType="com.khwebgame.core.dto.LoginInfo">
     SELECT
     id
     , nickname
     FROM user
     WHERE id=#{id} AND pw=#{pw};
     </select>
-    <select id="GetUser" parameterType="String" resultType="com.khwebgame.core.model.LoginInfo">
+    <select id="GetUser" parameterType="String" resultType="com.khwebgame.core.dto.LoginInfo">
         SELECT
         id
         , nickname

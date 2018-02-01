@@ -6,8 +6,27 @@ function connect() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
 
-        stompClient.subscribe('/khcli-lobby/roomlist', (roomList) => {
+        console.log('Get Roomlist');
+        stompClient.send("/khserver/roomlist", {});
 
+        stompClient.subscribe('/khcli-lobby/roomlist', (roomList) => {
+            console.log(roomList.body);
+            if (roomList === null)
+                return;
+
+            let dataArr = JSON.parse(roomList.body);
+            for (let room of dataArr) {
+                let $room = $('<div></div>');
+                $room.append('<h3>' + room.name + '</h3>');
+                $room.append('<p>' + room.count + '</p>');
+
+                let $btnEnter = $room.append('<button>Enter</button>');
+                $btnEnter.click(() => {
+//                    $.ajax
+                });
+
+                $('#rooms').append($room);
+            }
         });
 
         stompClient.subscribe('/khcli-lobby/createroom', (room) => {

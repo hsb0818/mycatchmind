@@ -1,4 +1,4 @@
-package com.khwebgame.core.model;
+package com.khwebgame.core.dto;
 
 public class LoginInfo {
     private String id;

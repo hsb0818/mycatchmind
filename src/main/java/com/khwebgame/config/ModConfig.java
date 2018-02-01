@@ -1,10 +1,13 @@
 package com.khwebgame.config;
 
+import com.google.gson.Gson;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Config {
-    public final static String SESS_USER_KEY = "USER_KEY";
-    public final static int MAX_ROOM_USERS = 4;
+public class ModConfig {
+    @Bean(name = "GsonMod")
+    public Gson getGson() {
+        return new Gson();
+    }
 }

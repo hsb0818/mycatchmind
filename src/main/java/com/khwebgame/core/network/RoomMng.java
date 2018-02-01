@@ -1,14 +1,8 @@
 package com.khwebgame.core.network;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.khwebgame.common.model.Room;
-
+import com.khwebgame.common.dto.Room;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class RoomMng {
     private RoomMng() {}
@@ -24,28 +18,35 @@ public class RoomMng {
 
     private static RoomMng instance;
 
-    public void insert(Room room) {
-        mRooms.add(room);
+    public ArrayList<Room> getmRooms() {
+        return mRooms;
     }
 
-    public void removeById(int id) {
-        for (int i=0; i<mRooms.size(); i++) {
-            if (mRooms.get(i).getId() != id)
-                continue;
+    public void insert(Room room) {
+        synchronized (RoomMng.class) {
+            mRooms.add(room);
+        }
+    }
 
-            mRooms.remove(i);
-            return;
+    public void removeById(UUID id) {
+        synchronized (RoomMng.class) {
+            for (int i = 0; i < mRooms.size(); i++) {
+                if (mRooms.get(i).getId() != id)
+                    continue;
+
+                mRooms.remove(i);
+                return;
+            }
         }
     }
 
     public void removeByIdx(int idx) {
-        mRooms.remove(idx);
+        synchronized (RoomMng.class) {
+            mRooms.remove(idx);
+        }
     }
 
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(mRooms);
-    }
+    public int getCount() { return mRooms.size(); }
 
     private ArrayList<Room> mRooms = new ArrayList<Room>();
 }

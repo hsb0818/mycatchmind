@@ -1,10 +1,8 @@
 package com.khwebgame.core.dao;
 
-import com.khwebgame.core.model.LoginInfo;
+import com.khwebgame.core.dto.LoginInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository

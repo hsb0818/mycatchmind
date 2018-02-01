@@ -1,7 +1,7 @@
 package com.khwebgame.core.bo;
 
 import com.khwebgame.core.dao.LoginDAO;
-import com.khwebgame.core.model.LoginInfo;
+import com.khwebgame.core.dto.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

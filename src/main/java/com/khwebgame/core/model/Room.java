@@ -1,4 +1,4 @@
-package com.khwebgame.common.dto;
+package com.khwebgame.core.model;
 
 import com.khwebgame.config.Config;
 
@@ -8,6 +8,7 @@ public class Room {
     private UUID id = UUID.randomUUID();
     private int count = 1;
     private String name = "";
+//    private ArrayList
 
     public Room(String _name) {
         name = _name;

@@ -1,6 +1,6 @@
 package com.khwebgame.core.network;
 
-import com.khwebgame.common.dto.Room;
+import com.khwebgame.core.model.Room;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -47,6 +47,17 @@ public class RoomMng {
     }
 
     public int getCount() { return mRooms.size(); }
+
+    public void Enter(final UUID roomUid) {
+        synchronized (RoomMng.class) {
+            for (final Room room : mRooms) {
+                if (room.getId().equals(roomUid) == false)
+                    continue;
+
+                break;
+            }
+        }
+    }
 
     private ArrayList<Room> mRooms = new ArrayList<Room>();
 }

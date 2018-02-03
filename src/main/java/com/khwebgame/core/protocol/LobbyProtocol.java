@@ -1,8 +1,8 @@
-package com.khwebgame.common.protocol;
+package com.khwebgame.core.protocol;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.khwebgame.common.dto.Room;
+import com.khwebgame.core.model.Room;
 import com.khwebgame.core.network.RoomMng;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,10 +11,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class LobbyProtocol {
@@ -22,7 +19,7 @@ public class LobbyProtocol {
     @Qualifier("GsonMod")
     Gson gson;
 
-    @MessageMapping("/createroom")
+    @MessageMapping("/lobby/createroom")
     @SendTo("/khcli-lobby/createroom")
     public String createRoom(String message) throws  Exception {
         Type type = new TypeToken<HashMap<String, String>>(){}.getType();
@@ -34,7 +31,7 @@ public class LobbyProtocol {
         return message;
     }
 
-    @MessageMapping("/roomlist") // khwebgame/hello
+    @MessageMapping("/lobby/roomlist") // khwebgame/hello
     @SendTo("/khcli-lobby/roomlist")
     public String roomList() throws Exception {
 

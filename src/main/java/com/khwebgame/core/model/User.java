@@ -1,27 +1,27 @@
 package com.khwebgame.core.model;
 
 public class User {
-    private String nickname;
-    private String id;
+    String id;
+    String name;
 
-    public User(String _id, String _nickname) {
+    public User(String _id, String _name) {
         id = _id;
-        nickname = _nickname;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getNickname() {
-        return nickname;
+        name = _name;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

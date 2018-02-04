@@ -1,23 +1,35 @@
 package com.khwebgame.core.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khwebgame.config.Config;
 import com.khwebgame.core.network.RoomMng;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping(value = "/room", method = { RequestMethod.GET, RequestMethod.POST })
 public class RoomCtrl {
-    @RequestMapping(value = "/in/{uid}")
-    public Map<String, Object> in() {
+    @RequestMapping(value = "/session")
+    @ResponseBody
+    public boolean session(final HttpSession session, @RequestParam(value = Config.SESS_ROOM_UID)String uid) {
+        session.setAttribute(Config.SESS_ROOM_UID, uid);
+        System.out.println(uid);
+        return true;
+    }
 
-        Map<String, Object> map = new HashMap();
+    @RequestMapping(value = "/in/{roomName}")
+    public String in(final HttpSession session, Model model,
+                     @PathVariable String roomName) {
 
-//        map.put("name", )
 
-        return map;
+
+        model.addAttribute("roomName", roomName);
+        return "room";
     }
 }

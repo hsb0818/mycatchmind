@@ -9,8 +9,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class HttpHandshakeInterceptor implements HandshakeInterceptor {
-
+public class RoomHttpHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map attributes) throws Exception {
@@ -19,11 +18,13 @@ public class HttpHandshakeInterceptor implements HandshakeInterceptor {
             HttpSession session = servletRequest.getServletRequest().getSession();
             attributes.put(Config.SESS_USER_ID, session.getAttribute(Config.SESS_USER_ID));
             attributes.put(Config.SESS_USER_NAME, session.getAttribute(Config.SESS_USER_NAME));
+            attributes.put(Config.SESS_ROOM_UID, session.getAttribute(Config.SESS_ROOM_UID));
             attributes.put("sessionId", session.getId());
 
-            System.out.println("Entered in websocket handshake intercepter : " + session.getId().toString());
+            System.out.println("Entered in [Room] websocket handshake intercepter : " + session.getId().toString());
             System.out.println("user id : " + session.getAttribute(Config.SESS_USER_ID));
             System.out.println("user name : " + session.getAttribute(Config.SESS_USER_NAME));
+            System.out.println("user room UID : " + session.getAttribute(Config.SESS_ROOM_UID));
         }
         return true;
     }

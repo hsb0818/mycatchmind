@@ -40,14 +40,14 @@ public class LobbySocketHandler extends TextWebSocketHandler {
     }
 
     private boolean handler(final WebSocketSession session, final Map<String, Object> mapData) throws Exception {
-        if (mapData.containsKey(Config.PROTOCOL_PREFIX) == false)
+        if (!mapData.containsKey(Config.PROTOCOL_PREFIX))
             return false;
 
         LobbyProtocol.TYPE proto = LobbyProtocol.TYPE.values()[Integer.parseInt(mapData.get(Config.PROTOCOL_PREFIX).toString())];
         switch (proto) {
             case ROOM_CREATE: {
-                if (mapData.containsKey("roomName") == false) {
-                    failHandler(session, null);
+                if (!mapData.containsKey("roomName")) {
+                    failHandler(session, "roomName");
                     return false;
                 }
 
@@ -55,8 +55,8 @@ public class LobbySocketHandler extends TextWebSocketHandler {
                 return true;
             }
             case ROOM_JOIN: {
-                if (mapData.containsKey("uid") == false) {
-                    failHandler(session, null);
+                if (!mapData.containsKey("uid")) {
+                    failHandler(session, "uid");
                     return false;
                 }
 

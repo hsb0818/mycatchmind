@@ -35,6 +35,20 @@ public class Room {
         return list;
     }
 
+    public ArrayList<User> getAnotherUsers(final String id) {
+        ArrayList<User> list = new ArrayList<>();
+        for (WebSocketSession member : users) {
+            if (member.getAttributes().get(Config.SESS_USER_ID).toString().equals(id))
+                continue;
+
+            list.add(new User(member.getAttributes().get(Config.SESS_USER_ID).toString(),
+                    member.getAttributes().get(Config.SESS_USER_NAME).toString())
+            );
+        }
+
+        return list;
+    }
+
     public void enter(final WebSocketSession user) {
         users.add(user);
     }

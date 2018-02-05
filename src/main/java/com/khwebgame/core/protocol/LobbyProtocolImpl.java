@@ -30,7 +30,6 @@ public class LobbyProtocolImpl implements LobbyProtocol {
         map.put(Config.PROTOCOL_SUC, true);
         map.put("roomName", room.getName());
         map.put(Config.SESS_ROOM_UID, room.getId());
-        map.put("users", room.getUsers());
 
         session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(map)));
 
@@ -55,10 +54,11 @@ public class LobbyProtocolImpl implements LobbyProtocol {
     @Override
     public void roomInfoUpdateResponse(WebSocketSession session) throws Exception {
         ArrayList<Map<String, Object>> rooms = new ArrayList<>();
-        for (Room room : RoomMng.getInstance().getRooms()) {
-            Map map = new HashMap();
-            map.put("roomName", room.getName());
-            map.put("roomCount", room.userCount());
+        for (final Map.Entry<UUID, Room> room : RoomMng.getInstance().getRooms().entrySet()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put(Config.SESS_ROOM_UID, room.getValue().getId());
+            map.put("roomName", room.getValue().getName());
+            map.put("roomCount", room.getValue().userCount());
             rooms.add(map);
         }
 

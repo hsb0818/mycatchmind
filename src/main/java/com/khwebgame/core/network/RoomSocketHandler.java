@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class RoomSocketHandler extends TextWebSocketHandler {
-    RoomProtocol lobbyProtocol = new RoomProtocolImpl();
+    RoomProtocol roomProtocol = new RoomProtocolImpl();
     List<WebSocketSession>  sessions = new ArrayList<>();
 
     @Override
@@ -51,6 +51,12 @@ public class RoomSocketHandler extends TextWebSocketHandler {
             return false;
 
         RoomProtocol.TYPE proto = RoomProtocol.TYPE.values()[Integer.parseInt(mapData.get(Config.PROTOCOL_PREFIX).toString())];
+        switch (proto) {
+            case CHAT: {
+                roomProtocol.chat(session, mapData.get("chat").toString());
+                break;
+            }
+        }
 
         return false;
     }

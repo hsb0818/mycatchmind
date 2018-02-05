@@ -5,10 +5,33 @@
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/room_client.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/room.css"/>
 
     <meta charset="UTF-8"/>
     <title th:text="${roomName}"></title>
 </head>
 <body>
+    <div id="room-outter">
+        <h1>
+            Room : <strong th:text="${roomName}"></strong>
+        </h1>
+        <div id="room">
+            <div id="user" th:each="user : ${users}">
+                <h3 th:if="${#strings.equals(user.getId(), myId)}" th:id="'me-user'">
+                    user :
+                    <strong th:text="${user.getName()}"></strong>
+                </h3>
+                <h3 th:unless="${#strings.equals(user.getId(), myId)}" th:id="'just-user'">
+                    user :
+                    <strong th:text="${user.getName()}"></strong>
+                </h3>
+            </div>
+        </div>
+        <div id="chat">
+            <div id="chat-window"></div>
+            <input id="chat-input" type="text" placeholder="hi hello good night good luck!"/>
+            <button id="chat-send">Send</button>
+        </div>
+    </div>
 </body>
 </html>

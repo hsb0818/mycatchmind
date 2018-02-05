@@ -16,7 +16,7 @@ sock.onopen = function() {
 sock.onmessage = function(e) {
     console.log('message', e.data);
     let dataMap = JSON.parse(e.data);
-    if (dataMap[Config.PROTOCOL_SUC] == false) {
+    if (!dataMap[Config.PROTOCOL_SUC]) {
         console.log('[suc] receive is failed');
         return;
     }
@@ -40,9 +40,46 @@ sock.onmessage = function(e) {
             break;
         }
         case LOBBY_PROTOCOL.ROOM_JOIN: {
+            $.post('/room/session',
+                {
+                    [Config.SESS_ROOM_UID] : dataMap[Config.SESS_ROOM_UID]
+                })
+                .done((data) => {
+                    alert('successed to send roomUid');
+                    window.location.replace("http://localhost:9208/room/in/" + dataMap["roomName"]);
+                })
+                .fail(() => {
+                    alert('failed to send roomUid');
+                });
             break;
         }
         case LOBBY_PROTOCOL.ROOMINFO_UPDATE: {
+            if (Object.keys(dataMap['rooms']).length === 0)
+                break;
+
+            if ($('#rooms-inner').length) {
+                $('#rooms-inner').remove();
+            }
+
+            let $rooms = $('<div id="rooms-inner"></div>');
+            for (const room of dataMap['rooms']) {
+                let $room = $('<div id="room"></div>');
+                $room.append('<h3>name : ' + room['roomName'] + '</h3>');
+                $room.append('<h4>count : ' + room['roomCount'] + '</h4>');
+
+                let $btnJoin = $('<button>Join</button>');
+                $btnJoin.click((e) => {
+                    sock.send(JSON.stringify({
+                        [Config.PROTOCOL_PREFIX] : LOBBY_PROTOCOL.ROOM_JOIN,
+                        uid: room[Config.SESS_ROOM_UID]
+                    }))
+                });
+
+                $room.append($btnJoin);
+                $rooms.append($room);
+            }
+
+            $('#rooms').append($rooms);
             break;
         }
     }

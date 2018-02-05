@@ -5,6 +5,8 @@ import com.khwebgame.core.model.Room;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class RoomMng {
@@ -21,32 +23,26 @@ public class RoomMng {
 
     private static RoomMng instance;
 
-    public ArrayList<Room> getRooms() {
+    public Map<UUID, Room> getRooms() {
         return mRooms;
     }
 
     public Room insert(Room room) {
         synchronized (RoomMng.class) {
-            mRooms.add(room);
+            mRooms.put(room.getId(), room);
             return room;
         }
     }
 
-    public void removeById(UUID id) {
+    public boolean removeById(UUID roomUid) {
         synchronized (RoomMng.class) {
-            for (int i = 0; i < mRooms.size(); i++) {
-                if (mRooms.get(i).getId() != id)
-                    continue;
+            if (!mRooms.containsKey(roomUid))
+                return false;
 
-                mRooms.remove(i);
-                return;
-            }
-        }
-    }
+            final Room room = mRooms.get(roomUid);
+            mRooms.remove(roomUid);
+            return true;
 
-    public void removeByIdx(int idx) {
-        synchronized (RoomMng.class) {
-            mRooms.remove(idx);
         }
     }
 
@@ -54,63 +50,66 @@ public class RoomMng {
 
     public Room enter(final UUID roomUid, final WebSocketSession user) {
         synchronized (RoomMng.class) {
-            for (final Room room : mRooms) {
-                if (room.getId() != roomUid)
-                    continue;
-                if (room.isIn(user) == false)
-                    continue;
+            if (!mRooms.containsKey(roomUid))
+                return null;
 
-                room.enter(user);
-                return room;
-            }
+            final Room room = mRooms.get(roomUid);
+            if (room.isIn(user))
+                return null;
 
-            return null;
+            room.enter(user);
+            return room;
         }
     }
 
-    public Room leave(final WebSocketSession user) {
+    public Room leave(final UUID roomUid, final WebSocketSession user) {
         synchronized (RoomMng.class) {
-            for (final Room room : mRooms) {
-                room.leave(user);
-                return room;
-            }
+            if (!mRooms.containsKey(roomUid))
+                return null;
 
-            return null;
+            final Room room = mRooms.get(roomUid);
+            if (!room.isIn(user))
+                return null;
+
+            room.leave(user);
+            return room;
         }
     }
 
     public boolean updateWebSocketSession(UUID roomUid, WebSocketSession sameUser, String sessonID) {
         synchronized (RoomMng.class) {
-            for (final Room room : mRooms) {
-                System.out.println("---------------");
-                System.out.println(room.getId());
-                System.out.println(roomUid);
-                System.out.println("111111111111111");
-                if (room.getId().compareTo(roomUid) != 0)
+            if (!mRooms.containsKey(roomUid))
+                return false;
+
+            Room room = mRooms.get(roomUid);
+            ArrayList<WebSocketSession> users = room.getUserSessions();
+            System.out.println("user count : " + room.userCount());
+            for (final WebSocketSession user : users) {
+                System.out.println(user.getId());
+                if (!user.getAttributes().get(Config.SESS_USER_ID).toString().equals(sessonID))
                     continue;
 
-                ArrayList<WebSocketSession> users = room.getUserSessions();
-                System.out.println("user count : " + room.userCount());
-                for (final WebSocketSession user : users) {
-                    System.out.println(user.getId());
-                    if (user.getAttributes().get(Config.SESS_USER_ID).toString().equals(sessonID) == false)
-                        continue;
+                // replace old session to new session on same user.
+                users.remove(user);
+                users.add(sameUser);
 
-                    // replace old session to new session on same user.
-                    users.remove(user);
-                    users.add(sameUser);
-
-                    System.out.println(sameUser.getId());
-                    System.out.println("founded and replaced!");
-                    return true;
-                }
-
-                break;
+                System.out.println(sameUser.getId());
+                System.out.println("founded and replaced!");
+                return true;
             }
 
             return false;
         }
     }
 
-    private ArrayList<Room> mRooms = new ArrayList<Room>();
+    public Room getRoom(final UUID roomUid) {
+        synchronized (RoomMng.class) {
+            if (!mRooms.containsKey(roomUid))
+                return null;
+
+            return mRooms.get(roomUid);
+        }
+    }
+
+    private Map<UUID, Room> mRooms = new HashMap<>();
 }

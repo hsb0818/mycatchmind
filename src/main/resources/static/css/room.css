@@ -1,0 +1,30 @@
+#room-outter {
+    border-style: solid;
+}
+
+#user {
+    border-style: solid;
+}
+
+#me-user {
+    color: blueviolet;
+}
+
+#just-user {
+    color: blue;
+}
+
+#chat-window {
+    border-style: solid;
+    border-color: deeppink;
+    height: 400px;
+}
+
+#chat-input {
+    width: 100%;
+    height: auto;
+}
+
+.chat-bottom {
+    font-weight: bold;
+}

@@ -78,4 +78,10 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         System.out.println("send to user that a message");
     }
+
+    public void roomInfoUpdate() throws Exception {
+        for (WebSocketSession session : sessions) {
+            lobbyProtocol.roomInfoUpdateResponse(session);
+        }
+    }
 }

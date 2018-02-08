@@ -21,6 +21,7 @@ public class RoomCtrl {
     @ResponseBody
     public boolean session(final HttpSession session, @RequestParam(value = Config.SESS_ROOM_UID)String uid) {
         session.setAttribute(Config.SESS_ROOM_UID, uid);
+        System.out.println("!@#@!$@!$@!#");
         System.out.println(uid);
         return true;
     }
@@ -29,7 +30,13 @@ public class RoomCtrl {
     public String in(final HttpSession session, Model model,
                      @PathVariable String roomName) {
 
+        System.out.println("Asdasdasdasdsa");
+        System.out.println(session.getAttribute(Config.SESS_ROOM_UID).toString());
         Room room = RoomMng.getInstance().getRoom(UUID.fromString(session.getAttribute(Config.SESS_ROOM_UID).toString()));
+
+        if (room == null)
+            return null;
+
         model.addAttribute("roomName", room.getName());
         model.addAttribute("myId", session.getAttribute(Config.SESS_USER_ID));
         model.addAttribute("users", room.getUsers());

@@ -4,7 +4,9 @@ import org.springframework.web.socket.WebSocketSession;
 
 public interface RoomProtocol {
     public enum TYPE {
-        CHAT(0);
+        JOIN(0),
+        CHAT(1),
+        READY(2);
 
         private int val;
         TYPE(int _val) {
@@ -16,5 +18,7 @@ public interface RoomProtocol {
         }
     }
 
+    public void join(WebSocketSession session) throws Exception;
     public void chat(WebSocketSession session, String chat) throws Exception;
+    public void ready(WebSocketSession session, boolean display) throws Exception;
 }

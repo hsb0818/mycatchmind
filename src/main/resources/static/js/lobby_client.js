@@ -4,7 +4,7 @@ let LOBBY_PROTOCOL = {
     ROOMINFO_UPDATE : 2,
 };
 
-let sock = new SockJS("http://localhost:9208/khwebgame-lobby");
+let sock = new SockJS("http://14.58.119.156:9208/khwebgame-lobby");
 sock.onopen = function() {
     console.log('open');
 
@@ -26,13 +26,14 @@ sock.onmessage = function(e) {
     switch (dataMap[Config.PROTOCOL_PREFIX])
     {
         case LOBBY_PROTOCOL.ROOM_CREATE: {
+            console.log(dataMap[Config.SESS_ROOM_UID]);
             $.post('/room/session',
                 {
                     [Config.SESS_ROOM_UID] : dataMap[Config.SESS_ROOM_UID]
                 })
                 .done((data) => {
                     alert('successed to send roomUid');
-                    window.location.replace("http://localhost:9208/room/in/" + dataMap["roomName"]);
+                    window.location.replace("http://14.58.119.156:9208/room/in/" + dataMap["roomName"]);
                 })
                 .fail(() => {
                     alert('failed to send roomUid');
@@ -46,7 +47,7 @@ sock.onmessage = function(e) {
                 })
                 .done((data) => {
                     alert('successed to send roomUid');
-                    window.location.replace("http://localhost:9208/room/in/" + dataMap["roomName"]);
+                    window.location.replace("http://14.58.119.156:9208/room/in/" + dataMap["roomName"]);
                 })
                 .fail(() => {
                     alert('failed to send roomUid');

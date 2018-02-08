@@ -52,8 +52,17 @@ public class RoomSocketHandler extends TextWebSocketHandler {
 
         RoomProtocol.TYPE proto = RoomProtocol.TYPE.values()[Integer.parseInt(mapData.get(Config.PROTOCOL_PREFIX).toString())];
         switch (proto) {
+            case JOIN: {
+                roomProtocol.join(session);
+                break;
+            }
             case CHAT: {
                 roomProtocol.chat(session, mapData.get("chat").toString());
+                break;
+            }
+            case READY: {
+                boolean display = Integer.parseInt(mapData.get("display").toString()) == 1;
+                roomProtocol.ready(session, display);
                 break;
             }
         }

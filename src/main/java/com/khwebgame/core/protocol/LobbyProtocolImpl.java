@@ -48,7 +48,7 @@ public class LobbyProtocolImpl implements LobbyProtocol {
         map.put("users", room.getUsers());
         session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(map)));
 
-        System.out.println(session.getAttributes().get(Config.SESS_USER_NAME) + " has been created a room : " + name);
+        System.out.println(room.getId() + "has been created a room : " + name);
     }
 
     @Override

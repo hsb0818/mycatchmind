@@ -9,7 +9,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class HttpHandshakeInterceptor implements HandshakeInterceptor {
+public class LobbyHttpHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,

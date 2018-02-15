@@ -10,6 +10,7 @@ public class Room {
     private UUID id = UUID.randomUUID();
     private String name = "";
     private ArrayList<WebSocketSession> users = new ArrayList<>();
+    private int readyCount = 0;
 
     public Room(String _name, WebSocketSession user) {
         name = _name;
@@ -20,6 +21,28 @@ public class Room {
     public void setId(UUID _id) { id = _id; }
     public String getName() { return name; }
     public void setName(String _name) { name = _name; }
+
+    public boolean readyToStart() {
+        return (readyCount > 1) && (readyCount == users.size());
+    }
+
+    public boolean incReadyCount() {
+        if (this.readyCount >= users.size()) {
+            return false;
+        }
+
+        this.readyCount++;
+        return true;
+    }
+
+    public boolean decReadyCount() {
+        if (this.readyCount <= 0) {
+            return false;
+        }
+
+        this.readyCount--;
+        return true;
+    }
 
     public ArrayList<WebSocketSession> getUserSessions() {
         return users;

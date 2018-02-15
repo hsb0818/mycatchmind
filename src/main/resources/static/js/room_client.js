@@ -4,7 +4,7 @@ let ROOM_PROTOCOL = {
     READY : 2,
 };
 
-let sock = new SockJS("http://14.58.119.156:9208/khwebgame-room");
+let sock = new SockJS("http://" + Config.SERVER_IP + ":9208/khwebgame-room");
 sock.onopen = function() {
     console.log('open');
     sock.send(JSON.stringify({
@@ -59,6 +59,20 @@ sock.onmessage = function(e) {
             else
                 $txtReady.hide();
 
+            if (parseInt(dataMap['readyToStart']) === 1) {
+                let count = 6;
+                let timer = setInterval(() => {
+                    if (count < 1) {
+                        clearInterval(timer);
+                        window.location.replace("http://" + Config.SERVER_IP + ":9208/game/in/" + roomName);
+                    }
+                    else {
+                        count--;
+                        chatEnter("start game after " + count.toString() + " sec", "red");
+                    }
+                }, 1000);
+            }
+
             break;
         }
     }
@@ -97,10 +111,14 @@ $(document).ready(() => {
     });
 });
 
-function chatEnter(input) {
+function chatEnter(input, color) {
+    if (color === null)
+        color = "black";
+
     let $chatWin = $('#chat-window');
     let $chat = $('<p></p>');
     $chat.addClass('chat-bottom');
+    $chat.css("color", color);
     $chat.text(input);
     $chatWin.append($chat);
 }

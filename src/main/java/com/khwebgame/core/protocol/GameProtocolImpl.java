@@ -8,14 +8,4 @@ public class GameProtocolImpl implements GameProtocol {
     public void gameStart(WebSocketSession session) throws Exception {
         // have to count
     }
-
-    @Override
-    public void gameStartEnd(WebSocketSession session) throws Exception {
-
-    }
-
-    @Override
-    public void moveUpdateRecv(WebSocketSession session, Vector3 pos) throws Exception {
-
-    }
 }

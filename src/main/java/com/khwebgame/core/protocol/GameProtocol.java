@@ -7,8 +7,7 @@ import java.util.UUID;
 
 public interface GameProtocol {
     public enum TYPE {
-        GAMESTART(0),
-        POSITION_UPDATE(1);
+        GAMESTART(0);
 
         private int val;
         TYPE(int _val) {
@@ -21,6 +20,4 @@ public interface GameProtocol {
     }
 
     public void gameStart(WebSocketSession session) throws Exception;
-    public void gameStartEnd(WebSocketSession session) throws Exception;
-    public void moveUpdateRecv(WebSocketSession session, Vector3 pos) throws Exception;
 }

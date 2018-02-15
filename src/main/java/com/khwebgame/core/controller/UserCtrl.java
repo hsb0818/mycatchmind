@@ -20,7 +20,11 @@ public class UserCtrl {
     LoginBO loginBO;
 
     @RequestMapping(value = context + "/login_page")
-    public String loginPage() {
+    public String loginPage(HttpSession session, Model model) {
+        Object isLogined = session.getAttribute(Config.SESS_USER_NAME);
+        if (isLogined != null)
+            return "redirect:lobby";
+
         return "login_page";
     }
 

@@ -67,13 +67,19 @@ public class RoomProtocolImpl implements RoomProtocol {
         if (room == null)
             return;
 
+        if (display)
+            room.incReadyCount();
+        else
+            room.decReadyCount();
+
         Map<String, Object> map = new HashMap<>();
         map.put(Config.PROTOCOL_PREFIX, TYPE.READY.getVal());
         map.put(Config.PROTOCOL_SUC, true);
         map.put("userId", session.getAttributes().get(Config.SESS_USER_ID).toString());
         map.put("display", display ? 1 : 0);
+        map.put("readyToStart", room.readyToStart() ? 1 : 0);
 
-        System.out.println("asdasdsadasds");
+        System.out.println("ready");
 
         for (final WebSocketSession user : room.getUserSessions()) {
             user.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(map)));

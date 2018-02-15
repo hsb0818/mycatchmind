@@ -16,10 +16,10 @@ import java.util.UUID;
 public class GameCtrl {
     @RequestMapping(value = "/in/{roomName}")
     public String game(final HttpSession session, Model model) {
-        UUID roomUid = UUID.fromString(session.getAttribute(Config.SESS_ROOM_UID).toString());
-        Room room = RoomMng.getInstance().getRoom(roomUid);
+ //       UUID roomUid = UUID.fromString(session.getAttribute(Config.SESS_ROOM_UID).toString());
+ //       Room room = RoomMng.getInstance().getRoom(roomUid);
 
-        model.addAttribute("roomName", room.getName());
+//        model.addAttribute("roomName", room.getName());
 
         return "game";
     }

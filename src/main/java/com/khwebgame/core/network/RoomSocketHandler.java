@@ -35,19 +35,21 @@ public class RoomSocketHandler extends TextWebSocketHandler {
         sessions.add(session);
         System.out.println(session.getId() + " connected");
 
-        String sessId = session.getAttributes().get(Config.SESS_USER_ID).toString();
+        String roomName = session.getAttributes().get(Config.SESS_ROOM_NAME).toString();
         UUID roomUid = UUID.fromString(session.getAttributes().get(Config.SESS_ROOM_UID).toString());
-        RoomMng.getInstance().updateWebSocketSession(roomUid, session, sessId);
+        RoomMng.getInstance().enter(roomUid, session, roomName);
+        System.out.println(session.getId() + " room readyCount has been inited");
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        roomProtocol.userExit(session);
         sessions.remove(session);
         System.out.println(session.getId() + " disconnected");
     }
 
     private boolean handler(final WebSocketSession session, final Map<String, Object> mapData) throws Exception {
-        if (mapData.containsKey(Config.PROTOCOL_PREFIX) == false)
+        if (!mapData.containsKey(Config.PROTOCOL_PREFIX))
             return false;
 
         RoomProtocol.TYPE proto = RoomProtocol.TYPE.values()[Integer.parseInt(mapData.get(Config.PROTOCOL_PREFIX).toString())];

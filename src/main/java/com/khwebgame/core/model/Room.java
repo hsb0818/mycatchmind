@@ -11,10 +11,27 @@ public class Room {
     private String name = "";
     private ArrayList<WebSocketSession> users = new ArrayList<>();
     private int readyCount = 0;
+    private int order = 0;
+    private WebSocketSession drawer = null;
+    private String corAnswer = "";
+
+    public void setCorAnswer(String corAnswer) {
+        this.corAnswer = corAnswer;
+    }
+
+    public String getCorAnswer() {
+        return corAnswer;
+    }
 
     public Room(String _name, WebSocketSession user) {
         name = _name;
         users.add(user);
+    }
+
+    public Room(String _name, WebSocketSession user, UUID _roomUID) {
+        name = _name;
+        users.add(user);
+        id = _roomUID;
     }
 
     public UUID getId() { return id; }
@@ -22,7 +39,19 @@ public class Room {
     public String getName() { return name; }
     public void setName(String _name) { name = _name; }
 
+    public WebSocketSession runOrder() {
+        int tempOrder = (order++) % users.size();
+        drawer = users.get(tempOrder);
+        return drawer;
+    }
+
+    public WebSocketSession getDrawer() {
+        return drawer;
+    }
+
+    public void initReadyCount() { readyCount = 0; }
     public boolean readyToStart() {
+        System.out.println("readyCount : " + readyCount);
         return (readyCount > 1) && (readyCount == users.size());
     }
 

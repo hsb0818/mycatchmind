@@ -13,6 +13,7 @@
 <body>
 <script th:inline="javascript">
     let myId = [[${myId}]];
+    let myName = [[${myName}]];
     let roomName = [[${roomName}]];
 </script>
 <div id="room-outter">
@@ -21,19 +22,7 @@
     </h1>
     <div id="room">
         <button id="btn-ready">Ready</button>
-        <div id="user">
-            <div th:each="user : ${users}">
-                <h3 th:if="${#strings.equals(user.getId(), myId)}" th:id="'me-user'">
-                    user :
-                    <strong th:text="${user.getName()}"></strong>
-                </h3>
-                <h3 th:unless="${#strings.equals(user.getId(), myId)}" th:id="'just-user'">
-                    user :
-                    <strong th:attr="user-id=${user.getId()}" th:text="${user.getName()}"></strong>
-                </h3>
-                <h1 th:id="'ready-' + ${user.getId()}" style="display: none;">Ready!</h1>
-            </div>
-        </div>
+        <div id="user"></div>
     </div>
     <div id="chat">
         <div id="chat-window"></div>

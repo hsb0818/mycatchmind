@@ -3,6 +3,7 @@ package com.khwebgame.core.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khwebgame.config.Config;
 import com.khwebgame.core.model.Room;
+import com.khwebgame.core.network.LobbyRoomMng;
 import com.khwebgame.core.network.RoomMng;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,14 @@ import java.util.UUID;
 public class RoomCtrl {
     @RequestMapping(value = "/session")
     @ResponseBody
-    public boolean session(final HttpSession session, @RequestParam(value = Config.SESS_ROOM_UID)String uid) {
+    public boolean session(final HttpSession session,
+                           @RequestParam(value = Config.SESS_ROOM_UID)String uid,
+                           @RequestParam(value = Config.SESS_ROOM_NAME)String roomName) {
         session.setAttribute(Config.SESS_ROOM_UID, uid);
-        System.out.println("!@#@!$@!$@!#");
+        session.setAttribute(Config.SESS_ROOM_NAME, roomName);
         System.out.println(uid);
+        System.out.println(roomName);
+
         return true;
     }
 
@@ -30,16 +35,9 @@ public class RoomCtrl {
     public String in(final HttpSession session, Model model,
                      @PathVariable String roomName) {
 
-        System.out.println("Asdasdasdasdsa");
-        System.out.println(session.getAttribute(Config.SESS_ROOM_UID).toString());
-        Room room = RoomMng.getInstance().getRoom(UUID.fromString(session.getAttribute(Config.SESS_ROOM_UID).toString()));
-
-        if (room == null)
-            return null;
-
-        model.addAttribute("roomName", room.getName());
+        model.addAttribute("roomName", roomName);
         model.addAttribute("myId", session.getAttribute(Config.SESS_USER_ID));
-        model.addAttribute("users", room.getUsers());
+        model.addAttribute("myName", session.getAttribute(Config.SESS_USER_NAME));
 
         return "room";
     }

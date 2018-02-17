@@ -1,7 +1,6 @@
 let LOBBY_PROTOCOL = {
-    ROOM_JOIN : 0,
-    ROOM_CREATE : 1,
-    ROOMINFO_UPDATE : 2,
+    ROOM_CREATE : 0,
+    ROOMINFO_UPDATE : 1,
 };
 
 let sock = new SockJS("http://" + Config.SERVER_IP + ":9208/khwebgame-lobby");
@@ -29,25 +28,12 @@ sock.onmessage = function(e) {
             console.log(dataMap[Config.SESS_ROOM_UID]);
             $.post('/room/session',
                 {
-                    [Config.SESS_ROOM_UID] : dataMap[Config.SESS_ROOM_UID]
+                    [Config.SESS_ROOM_UID] : dataMap[Config.SESS_ROOM_UID],
+                    [Config.SESS_ROOM_NAME] : dataMap[Config.SESS_ROOM_NAME]
                 })
                 .done((data) => {
                     alert('successed to send roomUid');
-                    window.location.replace("http://" + Config.SERVER_IP + ":9208/room/in/" + dataMap["roomName"]);
-                })
-                .fail(() => {
-                    alert('failed to send roomUid');
-                });
-            break;
-        }
-        case LOBBY_PROTOCOL.ROOM_JOIN: {
-            $.post('/room/session',
-                {
-                    [Config.SESS_ROOM_UID] : dataMap[Config.SESS_ROOM_UID]
-                })
-                .done((data) => {
-                    alert('successed to send roomUid');
-                    window.location.replace("http://" + Config.SERVER_IP + ":9208/room/in/" + dataMap["roomName"]);
+                    window.location.replace("http://" + Config.SERVER_IP + ":9208/room/in/" + dataMap[Config.SESS_ROOM_NAME]);
                 })
                 .fail(() => {
                     alert('failed to send roomUid');
@@ -65,15 +51,24 @@ sock.onmessage = function(e) {
             let $rooms = $('<div id="rooms-inner"></div>');
             for (const room of dataMap['rooms']) {
                 let $room = $('<div id="room"></div>');
-                $room.append('<h3>name : ' + room['roomName'] + '</h3>');
+                $room.append('<h3>name : ' + room[Config.SESS_ROOM_NAME] + '</h3>');
                 $room.append('<h4>count : ' + room['roomCount'] + '</h4>');
 
                 let $btnJoin = $('<button>Join</button>');
                 $btnJoin.click((e) => {
-                    sock.send(JSON.stringify({
-                        [Config.PROTOCOL_PREFIX] : LOBBY_PROTOCOL.ROOM_JOIN,
-                        uid: room[Config.SESS_ROOM_UID]
-                    }))
+                    console.log();
+
+                    $.post('/room/session', {
+                            [Config.SESS_ROOM_UID] : room[Config.SESS_ROOM_UID],
+                            [Config.SESS_ROOM_NAME] : room[Config.SESS_ROOM_NAME],
+                        })
+                        .done((data) => {
+                            alert('successed to send roomUid');
+                            window.location.replace("http://" + Config.SERVER_IP + ":9208/room/in/" + room[Config.SESS_ROOM_NAME]);
+                        })
+                        .fail(() => {
+                            alert('failed to send roomUid');
+                    });
                 });
 
                 $room.append($btnJoin);

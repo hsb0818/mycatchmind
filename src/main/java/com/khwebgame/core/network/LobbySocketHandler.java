@@ -54,15 +54,6 @@ public class LobbySocketHandler extends TextWebSocketHandler {
                 lobbyProtocol.roomCreate(session, mapData.get("roomName").toString());
                 return true;
             }
-            case ROOM_JOIN: {
-                if (!mapData.containsKey("uid")) {
-                    failHandler(session, "uid");
-                    return false;
-                }
-
-                lobbyProtocol.roomJoin(session, UUID.fromString(mapData.get("uid").toString()));
-            }
-
             case ROOMINFO_UPDATE: {
                 lobbyProtocol.roomInfoUpdateResponse(session);
                 return true;

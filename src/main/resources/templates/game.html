@@ -9,32 +9,27 @@
     <script src="/js/gconfig.js"></script>
     <script src="/js/game.js"></script>
     <script src="/js/game_client.js"></script>
-
-    <script type="text/javascript" src="/wpaint/lib/jquery.1.10.2.min.js"></script>
-    <script type="text/javascript" src="/wpaint/lib/jquery.ui.core.1.10.3.min.js"></script>
-    <script type="text/javascript" src="/wpaint/lib/jquery.ui.widget.1.10.3.min.js"></script>
-    <script type="text/javascript" src="/wpaint/lib/jquery.ui.mouse.1.10.3.min.js"></script>
-    <script type="text/javascript" src="/wpaint/lib/jquery.ui.draggable.1.10.3.min.js"></script>
-    <script type="text/javascript" src="/wpaint/lib/wColorPicker.min.js"></script>
-    <link rel="Stylesheet" type="text/css" href="/wpaint/lib/wColorPicker.min.css" />
-
-    <script type="text/javascript" src="/wpaint/wPaint.min.js"></script>
-    <link rel="Stylesheet" type="text/css" href="/wpaint/wPaint.min.css" />
-
-    <script type="text/javascript" src="/wpaint/plugins/main/wPaint.menu.main.min.js"></script>
-    <script type="text/javascript" src="/wpaint/plugins/text/wPaint.menu.text.min.js"></script>
-    <script type="text/javascript" src="/wpaint/plugins/shapes/wPaint.menu.main.shapes.min.js"></script>
-    <script type="text/javascript" src="/wpaint/plugins/file/wPaint.menu.main.file.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/game.css"/>
 </head>
 <body>
-<!--
-    <script th:inline="javascript">
+
+<script th:inline="javascript">
     let myId = [[${myId}]];
+    let myName = [[${myName}]];
     let roomName = [[${roomName}]];
 </script>
--->
-<div id="wPaint" style="width: 800px; height: 600px;"></div>
-<div id="game">
+
+<div id="btn-canvas-wrap">
+    <canvas id="main-canvas"></canvas>
+    <button id="clear-canvas">Clear</button>
 </div>
+<div id="chat">
+    <div id="chat-window"></div>
+    <input id="chat-input" type="text" placeholder="hi hello good night good luck!"/>
+    <button id="chat-send">Send</button>
+</div>
+<p class="correct-answer"></p>
+<button id="send-answer">Send Answer!</button>
+<div id="users-outter"></div>
 </body>
 </html>

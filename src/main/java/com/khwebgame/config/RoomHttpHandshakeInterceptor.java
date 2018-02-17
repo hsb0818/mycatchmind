@@ -19,12 +19,14 @@ public class RoomHttpHandshakeInterceptor implements HandshakeInterceptor {
             attributes.put(Config.SESS_USER_ID, session.getAttribute(Config.SESS_USER_ID));
             attributes.put(Config.SESS_USER_NAME, session.getAttribute(Config.SESS_USER_NAME));
             attributes.put(Config.SESS_ROOM_UID, session.getAttribute(Config.SESS_ROOM_UID));
+            attributes.put(Config.SESS_ROOM_NAME, session.getAttribute(Config.SESS_ROOM_NAME));
             attributes.put("sessionId", session.getId());
 
             System.out.println("Entered in [Room] websocket handshake intercepter : " + session.getId().toString());
             System.out.println("user id : " + session.getAttribute(Config.SESS_USER_ID));
             System.out.println("user name : " + session.getAttribute(Config.SESS_USER_NAME));
             System.out.println("user room UID : " + session.getAttribute(Config.SESS_ROOM_UID));
+            System.out.println("user room Name : " + session.getAttribute(Config.SESS_ROOM_NAME));
         }
         return true;
     }

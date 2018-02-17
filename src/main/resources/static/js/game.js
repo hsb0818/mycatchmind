@@ -1,9 +1,96 @@
 const Game = {
-    isStart : false
+    isStart : false,
+    mainCanvas : null,
+    mainCanvasContext : null,
+    previousMouseX : null,
+    previousMouseY : null,
 };
 
+function getMousePosOnCanvas(canvas, evt) {
+    let rect = canvas.getBoundingClientRect();
+    if (evt.clientX !== undefined && evt.clientY !== undefined) {
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+}
+
+function stroke(ctx, x, y) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.lineJoin = ctx.lineCap = "round";
+    ctx.lineWidth = 7;
+    ctx.globalAlpha = "0.2";  //NOTE ALWAYS SET TO 'TRANSPARENT' needs variable if you want to switch to solid.
+    ctx.beginPath();
+    ctx.moveTo(Game.previousMouseX, Game.previousMouseY);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.globalAlpha = "1";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(Game.previousMouseX, Game.previousMouseY);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.stroke();
+
+    move(x, y);
+}
+
+function move(mouseX, mouseY) {
+    Game.previousMouseX = mouseX;
+    Game.previousMouseY = mouseY;
+}
+
+function clearCanvas(ctx, canvas) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 Game.Play = () => {
-    console.log('game start')
+    let $mainCanvas = $('#main-canvas');
+    Game.mainCanvas = $mainCanvas[0];
+    Game.mainCanvasContext = Game.mainCanvas.getContext('2d');
+    Game.mainCanvas.width = 700;
+    Game.mainCanvas.height = 500;
+
+    let isDrawing  = false;
+    $mainCanvas.on("mousedown", function(e) {
+        if (myId === GameClient.drawer) {
+            isDrawing = true;
+            let pos = getMousePosOnCanvas(Game.mainCanvas, e);
+            move(pos.x, pos.y);
+
+            sock.send(JSON.stringify({
+                [Config.PROTOCOL_PREFIX]: GAME_PROTOCOL.DRAW_UPDATE,
+                x: pos.x,
+                y: pos.y,
+                init : 1,
+            }));
+        }
+    });
+
+    $mainCanvas.on("mousemove", function(e) {
+        if (myId === GameClient.drawer) {
+            if(isDrawing) {
+                let pos = getMousePosOnCanvas(Game.mainCanvas, e);
+                stroke(Game.mainCanvasContext, pos.x, pos.y);
+
+                sock.send(JSON.stringify({
+                    [Config.PROTOCOL_PREFIX]: GAME_PROTOCOL.DRAW_UPDATE,
+                    x: pos.x,
+                    y: pos.y,
+                    init : 0,
+                }));
+            }
+        }
+    });
+
+    $mainCanvas.on("mouseup", function(e) {
+        isDrawing = false;
+    });
+
+    console.log('game start');
     Game.isStart = true;
 };
 
@@ -46,23 +133,6 @@ function loop(timestamp) {
 let lastRender = 0;
 
 $(document).ready(() => {
-    $('#wPaint').wPaint({
-        path: '/wpaint/',
-        theme:           'standard classic', // set theme
-        autoScaleImage:  true,               // auto scale images to size of canvas (fg and bg)
-        autoCenterImage: true,               // auto center images (fg and bg, default is left/top corner)
-        menuHandle:      true,               // setting to false will means menus cannot be dragged around
-        menuOrientation: 'horizontal',       // menu alignment (horizontal,vertical)
-        menuOffsetLeft:  5,                  // left offset of primary menu
-        menuOffsetTop:   5,                  // top offset of primary menu
-        bg:              '#eeeeee',               // set bg on init
-        image:           null,               // set image on init
-        imageStretch:    false,              // stretch smaller images to full canvans dimensions
-        onShapeDown:     null,               // callback for draw down event
-        onShapeMove:     null,               // callback for draw move event
-        onShapeUp:       null,                // callback for draw up event
-    });
-
     window.requestAnimationFrame(loop);
 
     Game.Play();

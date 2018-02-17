@@ -1,0 +1,146 @@
+#main-canvas {
+    position: relative;
+    border-color: mediumpurple;
+    background-color: #ffe8e8;
+    border-style: solid;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#main-canvas:hover {
+    cursor: url(/img/cursor-pencil.png), auto;
+}
+
+#main-canvas:active {
+    cursor: url(/img/cursor-pencil.png), auto;
+}
+
+#chat {
+    position: relative;
+    width: 706px;
+    height: 350px;
+}
+
+#chat-window {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-style: solid;
+    border-color: deeppink;
+    width: 100%;
+    height: 315px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#chat-input {
+    position: absolute;
+    left: 0px;
+    bottom: 5px;
+    width: 80%;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#chat-send {
+    position: absolute;
+    right: 0px;
+    bottom: 5px;
+    width: 19%;
+    height: auto;
+}
+
+.correct-answer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 40px;
+    margin: 0;
+    text-align: center;
+    color: black;
+    border-style: solid;
+    border-color: #ff00d1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: large;
+}
+
+#send-answer {
+    position: absolute;
+    top: 41px;
+    right: 0;
+    width: 200px;
+    height: 40px;
+    margin: 0;
+    text-align: center;
+    color: black;
+    border-style: solid;
+    border-color: #ff00d1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: large;
+}
+#send-answer:active {
+    background-color: #56ffcc;
+}
+
+#users {
+    position: absolute;
+    top: 81px;
+    right: 0;
+    width: 200px;
+    height: auto;
+    border-style: solid;
+    border-color: #0070ff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#users > .user {
+    width: 100%;
+    height: 210px;
+    border-style: solid;
+    border-color: #ebff00;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#users > .user > .user-name {
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+    color: mediumpurple;
+    margin: 0;
+    border-style: solid;
+    border-color: #00ff78;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.chat-bottom {
+    font-weight: bold;
+}
+
+#btn-canvas-wrap {
+    width: 770px;
+    height: auto;
+    margin: 0;
+}
+
+#clear-canvas {
+    position: relative;
+    height: 40px;
+    float: right;
+}

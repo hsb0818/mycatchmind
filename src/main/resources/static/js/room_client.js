@@ -2,6 +2,7 @@ let ROOM_PROTOCOL = {
     JOIN : 0,
     CHAT : 1,
     READY : 2,
+    USER_EXIT : 3,
 };
 
 let sock = new SockJS("http://" + Config.SERVER_IP + ":9208/khwebgame-room");
@@ -12,6 +13,7 @@ sock.onopen = function() {
     }));
 };
 
+let timer = null;
 sock.onmessage = function(e) {
     console.log('message', e.data);
     let dataMap = JSON.parse(e.data);
@@ -23,30 +25,47 @@ sock.onmessage = function(e) {
     console.log("-------" + dataMap[Config.PROTOCOL_PREFIX]);
     switch (dataMap[Config.PROTOCOL_PREFIX]) {
         case ROOM_PROTOCOL.JOIN: {
-            let $user = $('<div></div>');
-            let $nameOutter = $('<h3></h3>');
-            $nameOutter.attr('id', 'just-user');
-            $nameOutter.text('user : ');
+            let $users = $('#user');
 
-            let $name = $('<strong></strong>');
-            $name.attr('user-id', dataMap['joinUserID']);
-            $name.text(dataMap['joinUserName']);
+            let $usersInner = $('#users-inner');
+            if ($usersInner !== null)
+                $usersInner.remove();
 
-            let $ready = $('<h1></h1>');
-            $ready.attr('id', 'ready-' + dataMap['joinUserID']);
-            $ready.css('display', 'none');
-            $ready.text('Ready!');
+            $usersInner = $('<div id="users-inner"></div>');
+            for (let user of dataMap['users']) {
+                let $user = $('<div></div>');
+                $user.attr('userwrap-id', user['userId']);
 
-            $nameOutter.append($name);
-            $nameOutter.append($ready);
-            $user.append($nameOutter);
+                let $nameOutter = $('<h3></h3>');
+                if (myId === user['userId']) {
+                    $nameOutter.attr('id', 'me-user');
+                }
+                else
+                    $nameOutter.attr('id', 'just-user');
+                $nameOutter.text('user : ');
 
-            $('#user').append($user);
+                let $name = $('<strong></strong>');
+                $name.attr('user-id', user['userId']);
+                $name.text(user['userName']);
+
+                let $ready = $('<h1></h1>');
+                $ready.attr('id', 'ready-' + user['userId']);
+                $ready.css('display', 'none');
+                $ready.text('Ready!');
+
+                $nameOutter.append($name);
+                $nameOutter.append($ready);
+                $user.append($nameOutter);
+
+                $usersInner.append($user);
+            }
+
+            $users.append($usersInner);
             break;
         }
 
         case ROOM_PROTOCOL.CHAT: {
-            chatEnter(dataMap['chat']);
+            chatEnter(dataMap['userName'], dataMap['chat']);
             break;
         }
 
@@ -61,17 +80,27 @@ sock.onmessage = function(e) {
 
             if (parseInt(dataMap['readyToStart']) === 1) {
                 let count = 6;
-                let timer = setInterval(() => {
+                timer = setInterval(() => {
                     if (count < 1) {
                         clearInterval(timer);
                         window.location.replace("http://" + Config.SERVER_IP + ":9208/game/in/" + roomName);
                     }
                     else {
                         count--;
-                        chatEnter("start game after " + count.toString() + " sec", "red");
+                        chatEnter("system : ", "start game after " + count.toString() + " sec", "red");
                     }
                 }, 1000);
             }
+            else {
+                clearInterval(timer);
+            }
+
+            break;
+        }
+        case ROOM_PROTOCOL.USER_EXIT: {
+            let $removeUser = $('div[user-id=' + dataMap['userId'] + ']');
+            if ($removeUser !== null)
+                $removeUser.remove();
 
             break;
         }
@@ -91,7 +120,7 @@ $(document).ready(() => {
             chat: $chatInput.val()
         }));
 
-        chatEnter($chatInput.val());
+        chatEnter(myName, $chatInput.val());
         $chatInput.val('');
     });
 
@@ -111,7 +140,7 @@ $(document).ready(() => {
     });
 });
 
-function chatEnter(input, color) {
+function chatEnter(who, input, color) {
     if (color === null)
         color = "black";
 
@@ -119,6 +148,6 @@ function chatEnter(input, color) {
     let $chat = $('<p></p>');
     $chat.addClass('chat-bottom');
     $chat.css("color", color);
-    $chat.text(input);
+    $chat.text(who + ' : ' + input);
     $chatWin.append($chat);
 }

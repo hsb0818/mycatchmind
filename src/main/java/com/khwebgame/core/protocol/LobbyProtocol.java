@@ -7,9 +7,8 @@ import java.util.UUID;
 
 public interface LobbyProtocol {
     public enum TYPE {
-        ROOM_JOIN(0),
-        ROOM_CREATE(1),
-        ROOMINFO_UPDATE(2);
+        ROOM_CREATE(0),
+        ROOMINFO_UPDATE(1);
 
         private int val;
         TYPE(int _val) {
@@ -21,7 +20,6 @@ public interface LobbyProtocol {
         }
     }
 
-    public void roomJoin(WebSocketSession session, UUID roomUid) throws Exception;
     public void roomCreate(WebSocketSession session, String name) throws Exception;
     public void roomInfoUpdateResponse(WebSocketSession session) throws Exception;
 }

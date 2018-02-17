@@ -27,13 +27,6 @@ public class RoomMng {
         return mRooms;
     }
 
-    public Room insert(Room room) {
-        synchronized (RoomMng.class) {
-            mRooms.put(room.getId(), room);
-            return room;
-        }
-    }
-
     public boolean removeById(UUID roomUid) {
         synchronized (RoomMng.class) {
             if (!mRooms.containsKey(roomUid))
@@ -48,12 +41,17 @@ public class RoomMng {
 
     public int getCount() { return mRooms.size(); }
 
-    public Room enter(final UUID roomUid, final WebSocketSession user) {
+    public Room enter(final UUID roomUid, final WebSocketSession user, final String roomName) {
         synchronized (RoomMng.class) {
-            if (!mRooms.containsKey(roomUid))
-                return null;
+            Room room = null;
 
-            final Room room = mRooms.get(roomUid);
+            if (!mRooms.containsKey(roomUid)) {
+                room = new Room(roomName, user, roomUid);
+                mRooms.put(room.getId(), room);
+                return room;
+            }
+
+            room = mRooms.get(roomUid);
             if (room.isIn(user))
                 return null;
 
@@ -76,29 +74,14 @@ public class RoomMng {
         }
     }
 
-    public boolean updateWebSocketSession(UUID roomUid, WebSocketSession sameUser, String sessonID) {
+    public boolean initReadyCount(UUID roomUid) {
         synchronized (RoomMng.class) {
             if (!mRooms.containsKey(roomUid))
                 return false;
 
             Room room = mRooms.get(roomUid);
-            ArrayList<WebSocketSession> users = room.getUserSessions();
-            System.out.println("user count : " + room.userCount());
-            for (final WebSocketSession user : users) {
-                System.out.println(user.getId());
-                if (!user.getAttributes().get(Config.SESS_USER_ID).toString().equals(sessonID))
-                    continue;
-
-                // replace old session to new session on same user.
-                users.remove(user);
-                users.add(sameUser);
-
-                System.out.println(sameUser.getId());
-                System.out.println("founded and replaced!");
-                return true;
-            }
-
-            return false;
+            room.initReadyCount();
+            return true;
         }
     }
 

@@ -17,5 +17,6 @@
 ![total structure](https://raw.githubusercontent.com/hsb0818/mycatchmind/master/readme_res/catchmind.jpg)
 
 ## 영상
+### - 다른 유저와 게임을 즐기는 Youtube 영상입니다.
 [![캐치마인드 웹버젼](http://img.youtube.com/vi/A20EBT6AMhA/0.jpg)](https://youtu.be/A20EBT6AMhA)
-### - 다른 유저와 게임을 즐기는 영상입니다.
+
